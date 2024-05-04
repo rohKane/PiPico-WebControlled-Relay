@@ -9,12 +9,13 @@ relay_pin = machine.Pin(16, machine.Pin.OUT)
 led = machine.Pin("LED", machine.Pin.OUT)
 
 # Set up WiFi connection
+#network.WLAN.deinit() # reset the ap
+time.sleep(2)
 gc.collect()
 ssid = "RPI_PICO"
 password = "B16plk@a"
 station = network.WLAN(network.AP_IF)
 print("Station status:", station.status()) # debug new
-time.sleep(2)
 station.active(True)
 station.config(essid=ssid, password=password)
 print("SSID:", ssid) # debug new
@@ -107,7 +108,7 @@ def handle_request(client_socket):
         client_socket.send("\n")
         client_socket.send(html)
 
-# Main loop
+# Main loop for PC connected
 while True:
     try:
         client, addr = s.accept()
@@ -117,7 +118,18 @@ while True:
         break
 
 # Disconnect from WiFi
-#station.disconnect()
-#station.active(False)
+station.disconnect()
+station.active(False)
 
+'''
+# Main loop no pc needed
+while True:
+    client, addr = s.accept()
+    handle_request(client)
+    client.close()
+
+# Disconnect from WiFi
+station.disconnect()
+station.active(False)
+'''
 
