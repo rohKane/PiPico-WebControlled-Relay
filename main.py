@@ -9,13 +9,12 @@ relay_pin = machine.Pin(16, machine.Pin.OUT)
 led = machine.Pin("LED", machine.Pin.OUT)
 
 # Set up WiFi connection
-#network.WLAN.deinit() # reset the ap
-time.sleep(2)
 gc.collect()
 ssid = "RPI_PICO"
 password = "B16plk@a"
 station = network.WLAN(network.AP_IF)
 print("Station status:", station.status()) # debug new
+time.sleep(2)
 station.active(True)
 station.config(essid=ssid, password=password)
 print("SSID:", ssid) # debug new
@@ -118,7 +117,7 @@ while True:
         break
 
 # Disconnect from WiFi
-station.disconnect()
-station.active(False)
+#station.disconnect()
+#station.active(False)
 
 
